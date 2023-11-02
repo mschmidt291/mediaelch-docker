@@ -20,7 +20,7 @@ RUN apt install -y \
 
 RUN git clone https://github.com/Komet/MediaElch.git && \
     cd MediaElch && \
-    git checkout v${VERSION} && \
+    git checkout ${VERSION} && \
     git submodule update --init && \
     mkdir build && \
     cd build && \
