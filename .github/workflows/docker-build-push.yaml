@@ -18,12 +18,10 @@ jobs:
     steps:
       - id: versions
         run: |
-          echo "VERSIONS<<EOF" >> $GITHUB_OUTPUT
-          echo $(curl -s https://api.github.com/repos/komet/mediaelch/tags | jq -r '.[].name') >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          echo "VERSIONS=$(curl -s https://api.github.com/repos/komet/mediaelch/tags | jq -c '[.[].name]')" >> $GITHUB_OUTPUT
 
     outputs:
-      versions: ${{ toJSON(steps.*.outputs.VERSIONS) }}
+      versions: ${{ steps.*.outputs.VERSIONS }}
 
   build-and-push-image:
     needs: matrix-prep-version
