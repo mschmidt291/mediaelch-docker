@@ -18,7 +18,7 @@ jobs:
     steps:
       - id: versions
         run: |
-          echo "VERSIONS=$(curl -s https://api.github.com/repos/komet/mediaelch/tags | jq -c '[.[].name]')" >> $GITHUB_OUTPUT
+          echo "VERSIONS=$(curl -s https://api.github.com/repos/komet/mediaelch/tags | jq -c '[limit(3;.[].name)]')" >> $GITHUB_OUTPUT
 
     outputs:
       versions: ${{ steps.versions.outputs.VERSIONS }}
