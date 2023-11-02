@@ -13,24 +13,23 @@ env:
 # There is a single job in this workflow. It's configured to run on the latest available version of Ubuntu.
 jobs:
   matrix-prep-version:
-    # Prepares the 'bazelversion' axis of the test matrix
     runs-on: ubuntu-latest
 
     steps:
       - id: versions
         run: |
-          echo 'versions<<EOF' >> $GITHUB_OUTPUT
-          $(curl -s https://api.github.com/repos/komet/mediaelch/tags | jq -r '.[].name') >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
+          echo "VERSIONS<<EOF" >> $GITHUB_OUTPUT
+          echo $(curl -s https://api.github.com/repos/komet/mediaelch/tags | jq -r '.[].name') >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
     outputs:
-      versions: ${{ toJSON(steps.*.outputs.versions) }}
+      versions: ${{ toJSON(steps.*.outputs.VERSIONS) }}
 
   build-and-push-image:
     needs: matrix-prep-version
     strategy:
       matrix:
-        version: ${{ fromJSON(needs.matrix-prep-version.outputs.versions) }}
+        version: ${{ fromJSON(needs.matrix-prep-version.outputs.VERSIONS) }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
