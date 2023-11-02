@@ -21,13 +21,13 @@ jobs:
           echo "VERSIONS=$(curl -s https://api.github.com/repos/komet/mediaelch/tags | jq -c '[.[].name]')" >> $GITHUB_OUTPUT
 
     outputs:
-      versions: ${{ steps.*.outputs.VERSIONS }}
+      versions: ${{ steps.versions.outputs.VERSIONS }}
 
   build-and-push-image:
     needs: matrix-prep-version
     strategy:
       matrix:
-        version: ${{ fromJSON(needs.matrix-prep-version.outputs.VERSIONS) }}
+        version: ${{ fromJSON(needs.matrix-prep-version.outputs.versions) }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
